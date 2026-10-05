@@ -5,11 +5,12 @@ Aggregates all API route modules and provides a single router for the main appli
 """
 
 from fastapi import APIRouter
+from app.api.v1.endpoints.tasks import router as tasks_router
 
 # Create main API router
 api_router = APIRouter()
 
-# Health check endpoints (temporary until full implementation)
+# Health check endpoints
 @api_router.get("/health")
 async def health_check():
     """API health check endpoint"""
@@ -29,7 +30,10 @@ async def status_check():
         "version": "1.0.0"
     }
 
-# TODO: Add task parsing endpoints
+# Include feature routers
+api_router.include_router(tasks_router, prefix="/tasks", tags=["Tasks"])
+
+# TODO: Add task parsing endpoints (LLM integration)
 # TODO: Add scheduling endpoints  
 # TODO: Add ML endpoints
 # TODO: Add explanation endpoints
